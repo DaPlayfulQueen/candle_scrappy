@@ -64,7 +64,7 @@ def get_candles_data():
 candles = get_candles_data()
 
 mongo_host = os.environ.get('MONGO_HOST')
-mongo_port - os.environ.get('MONGO_PORT')
+mongo_port = os.environ.get('MONGO_PORT')
 
 client = MongoClient(f'mongodb://{mongo_host}:{mongo_port}')
 db = client.testdb
@@ -72,4 +72,4 @@ collection = db.testcollection
 
 result = collection.insert_many(candles)
 
-print('The Mongo insertion result:', result.inserted_id)
+print('The Mongo insertion result:', result)
