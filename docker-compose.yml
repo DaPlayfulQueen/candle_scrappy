@@ -2,6 +2,7 @@ version: '3'
 services:
   ingestor:
     build: ./ingestor/
+    container_name: ingestor
     environment:
       MONGO_HOST: mongo
       MONGO_PORT: ${MONGO_PORT}
@@ -11,6 +12,7 @@ services:
 
   mysql:
     image: mysql:latest
+    container_name: mysql
     ports:
       - ${MYSQL_PORT}:${MYSQL_PORT}
     environment:
@@ -19,12 +21,13 @@ services:
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
     volumes:
-      - /mysql:/docker-entrypoint-initdb.d
+      - ./mysql_conf/:/docker-entrypoint-initdb.d
       - mysql:/var/lib/mysql
 
     
   mongo:
     image: mongo:latest
+    container_name: mongo
     ports:
       - ${MONGO_PORT}:${MONGO_PORT}
     volumes:
@@ -32,6 +35,7 @@ services:
 
   metabase:
     image: metabase/metabase:latest
+    container_name: metabase
     ports:
       - "3000:3000"
     environment:
