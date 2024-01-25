@@ -25,10 +25,10 @@ services:
     ports:
       - "27017:27017"
     environment:
-      MONGO_USERNAME: ${MONGO_USERNAME}
-      MONGO_PASSWORD: ${MONGO_PASSWORD}
-      MONGO_DATABASE: ${MONGO_DATABASE}
-      MONGO_COLLECTION: ${MONGO_COLLECTION}
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
+      MONGO_INITDB_DATABASE: ${MONGO_INITDB_DATABASE}
+      MONGO_INITDB_COLLECTION: ${MONGO_INITDB_COLLECTION}
     volumes:
       - /mongo/init.js:/docker-entrypoint-initdb.d/init-mongo.js:ro
       - mongo:/data/db
