@@ -5,7 +5,7 @@ CREATE TABLE candle (
 );
 
 CREATE TABLE price (
-    id INT,
+    id INT AUTO_INCREMENT PRIMARY KEY,
     candle_id VARCHAR(100),
     price FLOAT,
     date DATE,
