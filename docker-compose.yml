@@ -7,8 +7,13 @@ services:
       MONGO_HOST: mongo
       MONGO_PORT: ${MONGO_PORT}
   
-  # etl:
-    # build:
+  etl:
+    build: ./etl/
+    container_name: etl
+    environment:
+      MONGO_HOST: mongo
+      MONGO_PORT: ${MONGO_PORT}
+  
 
   mysql:
     image: mysql:latest
