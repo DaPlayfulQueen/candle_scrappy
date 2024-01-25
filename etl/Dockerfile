@@ -3,11 +3,10 @@ FROM python:3.9-alpine
 WORKDIR /app
 COPY requirements.txt /app/
 COPY etl.py /app/
-COPY cronjob.sh /etc/periodic/hourly/cronjob.sh
+COPY crontab.txt /crontab.txt
 
 RUN pip install -r requirements.txt
-
-RUN chmod +x /etc/periodic/hourly/cronjob.sh
+RUN /usr/bin/crontab /crontab.txt
 RUN chmod +x /app/etl.py
 
 CMD ["crond", "-f", "-d", "8"]
