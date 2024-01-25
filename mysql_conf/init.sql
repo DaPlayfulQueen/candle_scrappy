@@ -11,3 +11,5 @@ CREATE TABLE price (
     date DATE,
     FOREIGN KEY (candle_id) REFERENCES candle(id)
 );
+
+ALTER USER 'admin'@'your_host' IDENTIFIED WITH 'caching_sha2_password' BY 'cAndleMaker!2024';
