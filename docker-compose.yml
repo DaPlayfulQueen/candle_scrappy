@@ -24,9 +24,15 @@ services:
     image: mongo:latest
     ports:
       - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: your_user
+      MONGO_INITDB_ROOT_PASSWORD: your_password
+      MONGO_INITDB_DATABASE: your_database
+      MONGO_INITDB_COLLECTION: your_collection_name
     volumes:
+      - /mongo/init.js:/docker-entrypoint-initdb.d/init-mongo.js:ro
       - mongo:/data/db
-    
+
   metabase:
     image: metabase/metabase:latest
     ports:
