@@ -1,0 +1,45 @@
+version: '3'
+services:
+  ingestor:
+    build: ./ingestor/
+  
+  # etl:
+    # build:
+
+  mysql:
+    image: mysql:latest
+    ports:
+      - ${MYSQL_PORT}:${MYSQL_PORT}
+    environment:
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+    volumes:
+      - /mysql:/docker-entrypoint-initdb.d
+      - mysql:/var/lib/mysql
+
+    
+  mongo:
+    image: mongo:latest
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo:/data/db
+    
+  metabase:
+    image: metabase/metabase:latest
+    ports:
+      - "3000:3000"
+    environment:
+      MB_DB_TYPE: ${MB_DB_TYPE}
+      MB_DB_DBNAME: ${MYSQL_DATABASE}
+      MB_DB_PORT: ${MYSQL_PORT}
+      MB_DB_USER: ${MYSQL_USER}
+      MB_DB_PASS: ${MYSQL_PASSWORD}
+      MB_DB_HOST: mysql
+
+volumes:
+  mongo:
+  mysql:
+  metabase:
