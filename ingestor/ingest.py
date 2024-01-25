@@ -1,9 +1,11 @@
 import re
+import os
 from datetime import datetime
 
 import pandas as pd
 import requests
 from bs4 import BeautifulSoup
+from pymongo import MongoClient
 
 def get_candle_data(block) -> dict:
   anchor_tags = block.find_all('a')
@@ -16,14 +18,13 @@ def get_candle_data(block) -> dict:
   price_str_raw = block.find(class_='range-price').get_text()
   price_str = re.search(r'\d+,\d*', price_str_raw).group().replace(',', '.')
   price = float(price_str)
-  link_id = re.search(r'\/([^\/]+)$', link)
   date = datetime.now().strftime('%Y-%m-%d')
 
   return {
       'link': link,
       'name': name,
       'price': price,
-      'id': link_id,
+      'date': date
   }
 
 def handle_page(page):
@@ -61,3 +62,14 @@ def get_candles_data():
     is_first_iteration = False
 
 candles = get_candles_data()
+
+mongo_host = os.environ.get('MONGO_HOST')
+mongo_port - os.environ.get('MONGO_PORT')
+
+client = MongoClient(f'mongodb://{mongo_host}:{mongo_port}')
+db = client.testdb
+collection = db.testcollection
+
+result = collection.insert_many(candles)
+
+print('The Mongo insertion result:', result.inserted_id)
