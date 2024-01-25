@@ -10,10 +10,10 @@ mongo_port = os.environ.get('MONGO_PORT')
 reg1 = r'\/([^\/]+)$'
 reg2 = r'\?a=(\d+)(?:&lang=[a-zA-Z]+)?'
 
-def get_id(str: link) -> str:
-    raw_id = re.match(reg1, link)
+def get_id(link: str) -> str:
+    raw_id = re.search(reg1, link).group(1)
 
-    match = re.match(reg2, raw_id)
+    match = re.search(reg2, raw_id)
     
     if match:
       id = match.group(1)
@@ -37,3 +37,5 @@ candle_raw_data = list(collection.find())
 for candle in candle_raw_data:
   link = candle['link']
   candle['id'] = get_id(link)
+
+print(candle_raw_data[1])
