@@ -13,7 +13,10 @@ services:
     environment:
       MONGO_HOST: mongo
       MONGO_PORT: ${MONGO_PORT}
-  
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      
 
   mysql:
     image: mysql:latest
@@ -24,7 +27,7 @@ services:
       MYSQL_DATABASE: ${MYSQL_DATABASE}
       MYSQL_USER: ${MYSQL_USER}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
     volumes:
       - ./mysql_conf/:/docker-entrypoint-initdb.d
       - mysql:/var/lib/mysql
@@ -42,14 +45,7 @@ services:
     image: metabase/metabase:latest
     container_name: metabase
     ports:
-      - "3000:3000"
-    environment:
-      MB_DB_TYPE: ${MB_DB_TYPE}
-      MB_DB_DBNAME: ${MYSQL_DATABASE}
-      MB_DB_PORT: ${MYSQL_PORT}
-      MB_DB_USER: ${MYSQL_USER}
-      MB_DB_PASS: ${MYSQL_PASSWORD}
-      MB_DB_HOST: mysql
+      - "80:3000"
 
 volumes:
   mongo:

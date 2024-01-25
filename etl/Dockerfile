@@ -10,5 +10,5 @@ RUN pip install -r requirements.txt
 RUN chmod +x /etc/periodic/hourly/cronjob.sh
 RUN chmod +x /app/etl.py
 
-# CMD ["crond", "-f", "-d", "8"]
-CMD ["python", "/app/etl.py"]
+CMD ["crond", "-f", "-d", "8"]
+# CMD ["python", "/app/etl.py"]

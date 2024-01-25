@@ -1,15 +1,33 @@
+DELIMITER //
+
 CREATE TABLE candle (
     id VARCHAR(100) PRIMARY KEY,
     name VARCHAR(100),
     link VARCHAR(300)
-);
+)//
 
 CREATE TABLE price (
     id INT AUTO_INCREMENT PRIMARY KEY,
     candle_id VARCHAR(100),
     price FLOAT,
-    date DATE,
+    date TIMESTAMP,
     FOREIGN KEY (candle_id) REFERENCES candle(id)
-);
+)//
 
-ALTER USER 'admin'@'your_host' IDENTIFIED WITH 'caching_sha2_password' BY 'cAndleMaker!2024';
+CREATE TRIGGER check_condition_before_insert
+BEFORE INSERT ON price
+FOR EACH ROW
+BEGIN
+    IF EXISTS (
+        SELECT 1 FROM price
+        WHERE candle_id = NEW.candle_id AND date = NEW.date
+    ) THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'Duplicate combination of candle_id and date';
+    END IF;
+END;
+
+//
+
+DELIMITER ;
+

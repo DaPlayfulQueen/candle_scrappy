@@ -2,7 +2,6 @@ import re
 import os
 from datetime import datetime
 
-import pandas as pd
 import requests
 from bs4 import BeautifulSoup
 from pymongo import MongoClient
@@ -18,7 +17,7 @@ def get_candle_data(block) -> dict:
   price_str_raw = block.find(class_='range-price').get_text()
   price_str = re.search(r'\d+,\d*', price_str_raw).group().replace(',', '.')
   price = float(price_str)
-  date = datetime.now().strftime('%Y-%m-%d')
+  date = datetime.now()
 
   return {
       'link': link,

@@ -4,7 +4,7 @@ import re
 import mysql.connector
 from pymongo import MongoClient
 
-mysql_user = os.environ.get('MYSQL_USER')
+mysql_user = 'root'
 mysql_password = os.environ.get('MYSQL_PASSWORD')
 mysql_host = 'mysql'
 mysql_db = os.environ.get('MYSQL_DATABASE')
@@ -16,7 +16,6 @@ reg2 = r'\?a=(\d+)(?:&lang=[a-zA-Z]+)?'
 def create_mysql_connection(user, password, host, database):
     connection_config = {
         'user': user,
-        'password': password,
         'host': host,
         'database': database,
     }
@@ -52,11 +51,6 @@ collection = db.testcollection
 
 candle_raw_data = list(collection.find())
 
-# {'link': 'https://www.goosecreekcandle.de/?a=12436&lang=eng', 
-# 'name': 'Wonderland 3-Docht-Kerze 411g', 
-#'price': 25.95, 
-# 'date': '2024-01-25'}
-
 for candle in candle_raw_data:
   link = candle['link']
   candle['id'] = get_id(link)
@@ -66,9 +60,15 @@ cursor = connector.cursor()
 
 query1 = f'INSERT IGNORE INTO candle (id, name, link) VALUES (%s, %s, %s)'
 query2 = f'INSERT INTO price (candle_id, price, date) VALUES (%s, %s, %s)'
+
+
 for candle in candle_raw_data:
-  cursor.execute(query, (candle['id'], candle['name'], candle['link']))
-  cursor.execute(query, (candle['id'], candle['price'], candle['date']))
+  try:
+    cursor.execute(query1, (candle['id'], candle['name'], candle['link']))
+    cursor.execute(query2, (candle['id'], candle['price'], candle['date']))
+  except mysql.connector.errors.DatabaseError as e:
+    if e.errno == 1644:
+      print("Duplicate combination of candle_id and date. Skipping insertion.")
 
 connector.commit()
 
