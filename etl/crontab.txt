@@ -1,1 +1,1 @@
-8 * * * * /usr/local/bin/python /app/etl.py
+26 * * * * /usr/local/bin/python /app/etl.py
