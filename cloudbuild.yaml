@@ -1,6 +1,7 @@
 options:
   logging: CLOUD_LOGGING_ONLY
 steps:
+  # metabase
   - name: 'gcr.io/cloud-builders/kubectl'
     entrypoint: 'bash'
     args:
@@ -10,6 +11,7 @@ steps:
         kubectl apply -f metabase.yaml
         kubectl rollout status deployment metabase-deployment
 
+  # mongo
   - name: 'gcr.io/cloud-builders/kubectl'
     entrypoint: 'bash'
     args:
@@ -34,10 +36,18 @@ steps:
   - name: 'gcr.io/cloud-builders/docker'
     args: ['push', 'europe-west1-docker.pkg.dev/strange-mind-410708/candle-scrappy/ingestor:latest']
 
+  # ingestor
+  - name: 'gcr.io/cloud-builders/kubectl'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        kubectl apply -f ingestor-config.yaml
 
-  # - name: 'gcr.io/cloud-builders/kubectl'
-  #   entrypoint: 'bash'
-  #   args:
-  #     - '-c'
-  #     - |
-  #       kubectl apply -f ingestor-config.yaml
+  - name: 'gcr.io/cloud-builders/kubectl'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        kubectl apply -f ingestor.yaml
+        kubectl rollout status deployment ingestor-deployment
