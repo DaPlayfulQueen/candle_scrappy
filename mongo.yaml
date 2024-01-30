@@ -16,7 +16,7 @@ spec:
       - name: mongodb
         image: mongo:latest
         ports:
-        - containerPort: 3306
+        - containerPort: 27017
         volumeMounts:
         - name: mongo-data
           mountPath: /data/db
@@ -47,5 +47,5 @@ spec:
   selector:
     app: mongodb
   ports:
-  - port: 3306
-    targetPort: 3306
+  - port: 27017
+    targetPort: 27017
