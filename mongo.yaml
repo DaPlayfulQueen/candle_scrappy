@@ -12,7 +12,6 @@ spec:
       labels:
         app: mongodb
     spec:
-      hostname: mongo
       containers:
       - name: mongodb
         image: mongo:latest
@@ -32,10 +31,12 @@ spec:
             secretKeyRef:
               name: mongo-password
               key: mongo-password
+        hostname: mongo
       volumes:
       - name: mongo-data
         persistentVolumeClaim:
           claimName: mongo-pvc
+
 ---
 apiVersion: v1
 kind: Service
