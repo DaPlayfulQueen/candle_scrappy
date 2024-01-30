@@ -15,7 +15,7 @@ spec:
       hostname: ingestor
       containers:
       - name: ingestor
-        image: ingestor:latest
+        image: europe-west1-docker.pkg.dev/strange-mind-410708/candle-scrappy/ingestor:latest
         envFrom:
         - configMapRef:
             name: ingestor-config
