@@ -35,11 +35,10 @@ steps:
     - 'build'
     - '-t'
     - 'europe-west1-docker.pkg.dev/strange-mind-410708/candle-scrappy/ingestor:latest'
-    - '--build-arg'
-    - 'CRON_SCHEDULE=*/10 * * * *'  # Adjust the cron schedule as needed
     - '-f'
     - './ingestor/Dockerfile'
     - './ingestor'
+
 
   - name: 'gcr.io/cloud-builders/docker'
     args: ['push', 'europe-west1-docker.pkg.dev/strange-mind-410708/candle-scrappy/ingestor:latest']
