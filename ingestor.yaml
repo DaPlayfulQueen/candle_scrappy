@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ingestor-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ingestor
+  template:
+    metadata:
+      labels:
+        app: ingestor
+    spec:
+      hostname: ingestor
+      containers:
+      - name: ingestor
+        image: ingestor:latest
+        envFrom:
+        - configMapRef:
+            name: ingestor-config
