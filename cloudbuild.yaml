@@ -1,0 +1,11 @@
+options:
+  logging: CLOUD_LOGGING_ONLY
+steps:
+  - name: 'gcr.io/cloud-builders/kubectl'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        gcloud container clusters get-credentials candle-cluster --zone europe-west1 --project strange-mind-410708
+        kubectl apply -f metabase.yaml
+        kubectl rollout status deployment metabase-deployment
