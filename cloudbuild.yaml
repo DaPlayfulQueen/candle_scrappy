@@ -19,7 +19,7 @@ steps:
         kubectl apply -f mongo-pvc.yaml
         kubectl create secret generic mongo-secrets \
           --from-literal=mongo-user=$(gcloud secrets versions access latest --secret=mongo-user) \
-          --from-literal=mongo-password=$(gcloud secrets versions access latest --secret=mongo-password)
+          --from-literal=mongo-password=$(gcloud secrets versions access latest --secret=mongo-password) || true
 
   - name: 'gcr.io/cloud-builders/kubectl'
     entrypoint: 'bash'
