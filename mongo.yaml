@@ -25,12 +25,12 @@ spec:
         - name: MONGO_INITDB_ROOT_USERNAME
           valueFrom:
             secretKeyRef:
-              name: projects/strange-mind-410708/secrets/mongo-user
+              name: mongo-user
               key: mongo-user
         - name: MONGO_INITDB_ROOT_PASSWORD
           valueFrom:
             secretKeyRef:
-              name: projects/strange-mind-410708/secrets/mongo-password
+              name: mongo-password
               key: mongo-password
       volumes:
       - name: mongo-data
