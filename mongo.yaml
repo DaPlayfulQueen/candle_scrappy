@@ -31,11 +31,12 @@ spec:
             secretKeyRef:
               name: mongo-secrets
               key: mongo-password
-        hostname: mongo
+      hostname: mongo
       volumes:
       - name: mongo-data
         persistentVolumeClaim:
           claimName: mongo-pvc
+
 ---
 apiVersion: v1
 kind: Service
