@@ -6,14 +6,14 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      app: mongodb
+      app: mongo
   template:
     metadata:
       labels:
-        app: mongodb
+        app: mongo
     spec:
       containers:
-      - name: mongodb
+      - name: mongo
         image: mongo:latest
         ports:
         - containerPort: 27017
@@ -31,7 +31,6 @@ spec:
         #     secretKeyRef:
         #       name: mongo-secrets
         #       key: mongo-password
-      hostname: mongo
       volumes:
       - name: mongo-data
         persistentVolumeClaim:
@@ -44,8 +43,8 @@ metadata:
   name: mongo-service
 spec:
   selector:
-    app: mongodb
+    app: mongo
   ports:
-  - port: 27017
+  - protocol: TCP
+    port: 27017
     targetPort: 27017
-  clusterIP: None
