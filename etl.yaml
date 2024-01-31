@@ -39,4 +39,4 @@ spec:
         - name: MONGO_PORT
           value: '27017'
         - name: CRON_SCHEDULE
-          value: '*/3 * * * *'
+          value: '8 * * * *'
