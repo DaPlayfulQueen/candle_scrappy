@@ -1,3 +1,15 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mysql-data-claim
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5Gi
+
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -35,11 +47,29 @@ spec:
               key: MYSQL_PASSWORD
         - name: MYSQL_ALLOW_EMPTY_PASSWORD
           value: "yes"
-      volumeMounts:
-      - name: mysql-config
-        mountPath: /docker-entrypoint-initdb.d
+        volumeMounts:
+        - name: mysql-data
+          mountPath: /var/lib/mysql
+        - name: mysql-config
+          mountPath: /docker-entrypoint-initdb.d
 
-    volumes:
-    - name: mysql-config
-      hostPath:
-        path: ./mysql_config
+      volumes:
+      - name: mysql-data
+        persistentVolumeClaim:
+          claimName: mysql-data-claim
+      - name: mysql-config
+        hostPath:
+          path: ./mysql_config
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql-service
+spec:
+  selector:
+    app: mysql
+  ports:
+  - protocol: TCP 
+    port: 3306
+    targetPort: 3306
