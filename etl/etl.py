@@ -5,8 +5,9 @@ import mysql.connector
 from pymongo import MongoClient
 
 mysql_user = 'root'
-mysql_password = os.environ.get('MYSQL_PASSWORD')
-mysql_host = 'mysql'
+# mysql_password = os.environ.get('MYSQL_PASSWORD')
+mysql_password = None
+mysql_host = os.environ.get('MYSQL_HOST')
 mysql_db = os.environ.get('MYSQL_DATABASE')
 mongo_host = os.environ.get('MONGO_HOST')
 mongo_port = os.environ.get('MONGO_PORT')
@@ -18,6 +19,7 @@ def create_mysql_connection(user, password, host, database):
         'user': user,
         'host': host,
         'database': database,
+        'password': password
     }
     try:
         connector = mysql.connector.connect(**connection_config)

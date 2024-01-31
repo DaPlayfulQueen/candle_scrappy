@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: etl-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: etl
+  template:
+    metadata:
+      labels:
+        app: etl
+    spec:
+      hostname: etl
+      containers:
+      - name: etl
+        image: europe-west1-docker.pkg.dev/strange-mind-410708/candle-scrappy/etl:latest
+        env:
+        - name: MYSQL_DATABASE
+          valueFrom:
+            secretKeyRef:
+              name: mysql-secrets
+              key: mysql-database
+        - name: MYSQL_USER
+          valueFrom:
+            secretKeyRef:
+              name: mysql-secrets
+              key: mysql-user
+        - name: MYSQL_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mysql-secrets
+              key: mysql-password
+        - name: MYSQL_HOST
+          value: 'mysql-service'
+        - name: MONGO_HOST
+          value: 'mongo-service'
+        - name: MONGO_PORT
+          value: '27017'
+        - name: CRON_SCHEDULE
+          value: '*/3 * * * *'

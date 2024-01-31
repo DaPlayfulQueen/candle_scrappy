@@ -1,1 +1,0 @@
-26 * * * * /usr/local/bin/python /app/etl.py

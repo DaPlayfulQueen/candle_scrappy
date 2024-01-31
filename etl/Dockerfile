@@ -3,11 +3,9 @@ FROM python:3.9-alpine
 WORKDIR /app
 COPY requirements.txt /app/
 COPY etl.py /app/
-COPY crontab.txt /crontab.txt
 
+ENV CRON_SCHEDULE "8 * * * *"
 RUN pip install -r requirements.txt
-RUN /usr/bin/crontab /crontab.txt
-RUN chmod +x /app/etl.py
 
-CMD ["crond", "-f", "-d", "8"]
+CMD crontab -r && echo "$CRON_SCHEDULE /usr/local/bin/python /app/etl.py" | crontab - && exec crond -f -d 8
 # CMD ["python", "/app/etl.py"]

@@ -30,6 +30,7 @@ steps:
         kubectl apply -f mongo.yaml
         kubectl rollout status deployment mongo-deployment
 
+  # ingestor
   - name: 'gcr.io/cloud-builders/docker'
     args:
     - 'build'
@@ -39,11 +40,9 @@ steps:
     - './ingestor/Dockerfile'
     - './ingestor'
 
-
   - name: 'gcr.io/cloud-builders/docker'
     args: ['push', 'europe-west1-docker.pkg.dev/strange-mind-410708/candle-scrappy/ingestor:latest']
 
-  # ingestor
   - name: 'gcr.io/cloud-builders/kubectl'
     entrypoint: 'bash'
     args:
@@ -72,7 +71,6 @@ steps:
           --from-literal=mysql-password=$(gcloud secrets versions access latest --secret=mysql-password) \
           --from-literal=mysql-root-password=$(gcloud secrets versions access latest --secret=mysql-root-password) || true
 
-
   - name: 'gcr.io/cloud-builders/kubectl'
     entrypoint: 'bash'
     args:
@@ -80,3 +78,24 @@ steps:
       - |
         kubectl apply -f mysql.yaml
         kubectl rollout status deployment mysql-deployment  
+
+  # etl
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+    - 'build'
+    - '-t'
+    - 'europe-west1-docker.pkg.dev/strange-mind-410708/candle-scrappy/etl:latest'
+    - '-f'
+    - './etl/Dockerfile'
+    - './etl'
+
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push', 'europe-west1-docker.pkg.dev/strange-mind-410708/candle-scrappy/etl:latest']
+
+  - name: 'gcr.io/cloud-builders/kubectl'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        kubectl apply -f etl.yaml
+        kubectl rollout status deployment etl-deployment
