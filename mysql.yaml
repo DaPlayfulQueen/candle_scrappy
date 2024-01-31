@@ -58,9 +58,8 @@ spec:
         persistentVolumeClaim:
           claimName: mysql-data-claim
       - name: mysql-config
-        hostPath:
-          path: ./mysql_config
-
+        configMap:
+          name: mysql-config
 ---
 apiVersion: v1
 kind: Service

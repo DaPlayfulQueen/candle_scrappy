@@ -65,6 +65,7 @@ steps:
     args:
       - '-c'
       - |
+        kubectl apply -f mysql-config.yaml
         kubectl create secret generic mysql-secrets \
           --from-literal=mysql-user=$(gcloud secrets versions access latest --secret=mysql-user) \
           --from-literal=mysql-database=$(gcloud secrets versions access latest --secret=mysql-database) \
