@@ -66,8 +66,8 @@ mongo_host = os.environ.get('MONGO_HOST')
 mongo_port = os.environ.get('MONGO_PORT')
 
 client = MongoClient(f'mongodb://{mongo_host}:{mongo_port}')
-db = client.testdb
-collection = db.testcollection
+db = client.candle_db
+collection = db.candle_staging
 
 result = collection.insert_many(candles)
 

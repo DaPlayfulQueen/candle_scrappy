@@ -47,11 +47,19 @@ def get_id(link: str) -> str:
     return id
 
 
-mongo_client = MongoClient(f'mongodb://{mongo_host}:{mongo_port}')
-db = mongo_client.testdb
-collection = db.testcollection
+client = MongoClient(f'mongodb://{mongo_host}:{mongo_port}')
+db = client.candle_db
+staging_collection = db.candle_staging
+archive_collection = db.candle_archive
 
-candle_raw_data = list(collection.find())
+candle_raw_data = list(staging_collection.find())
+
+if len(candle_raw_data) == 0:
+  print('The staging was empty!')
+  exit(0)
+  
+archive_collection.insert_many(candle_raw_data)
+staging_collection.delete_many({})
 
 for candle in candle_raw_data:
   link = candle['link']
