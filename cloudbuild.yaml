@@ -65,7 +65,7 @@ steps:
     args:
       - '-c'
       - |
-        kubectl create secret generic mesql-secrets \
+        kubectl create secret generic mysql-secrets \
           --from-literal=mysql-user=$(gcloud secrets versions access latest --secret=mysql-user) \
           --from-literal=mysql-database=$(gcloud secrets versions access latest --secret=mysql-database) \
           --from-literal=mysql-password=$(gcloud secrets versions access latest --secret=mysql-password) \
@@ -78,4 +78,4 @@ steps:
       - '-c'
       - |
         kubectl apply -f mysql.yaml
-        kubectl rollout status deployment mongo-deployment  
+        kubectl rollout status deployment mysql-deployment  
